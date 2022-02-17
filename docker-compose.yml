@@ -1,0 +1,54 @@
+version: '2.2'
+
+services:
+  nginx:
+    image: nginx
+    init: true
+    depends_on:
+     - mariadb
+    build:
+      context: ./requirements/nginx
+#    environment:
+    networks:
+     - my_net
+    ports:
+     - "443:443"
+#    volumes:
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb
+    init: true
+    build:
+      context: ./requirements/mariadb
+    env_file:
+     - ./.env
+    networks:
+     - my_net
+#    volume:
+    expose:
+     - "3306"
+    restart: unless-stopped
+
+# wordpress:
+#    image: wordpress
+#    init: true
+
+volumes:
+  db:
+    name: "db"
+    driver: local
+    driver_opts:
+      type: local
+      o: bind
+      device: /home/dszklarz/db
+  wp:
+    name: "wordpress"
+    driver: local
+    driver_opts:
+      type: local
+      o: bind
+      device: /home/dszklarz/wordpress
+networks:
+  my_net:
+    name: "my_net"
