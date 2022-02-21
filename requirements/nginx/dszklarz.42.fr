@@ -1,0 +1,27 @@
+server  {
+	listen 443 ssl default_server;
+	listen [::]:443 default_server;
+
+	ssl_certificate		/etc/nginx/ssl/dszklarz.42.fr.pem;
+	ssl_certificate_key	/etc/nginx/ssl/dszklarz.42.fr-key.pem;
+
+	root /var/www/wordpress/public_html;
+
+	index index.html index.htm index.nginx-debian.html index.php;
+
+	server_name dszklarz.42.fr;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	location ~ \.php$ {
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		fastcgi_index index.php;
+		fastcgi_pass wordpress:9000;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+		include fastcgi_params;
+	}
+}
+
