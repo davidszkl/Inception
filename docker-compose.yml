@@ -8,12 +8,12 @@ services:
      - mariadb
     build:
       context: ./requirements/nginx
-#    environment:
     networks:
      - my_net
     ports:
      - "443:443"
-#    volumes:
+    volumes:
+     - wordpress_vol:/var/www/dszklarz.42.fr
     restart: unless-stopped
 
   mariadb:
@@ -25,7 +25,8 @@ services:
      - ./.env
     networks:
      - my_net
-#    volume:
+    volumes:
+     - mariadb_vol:/var/lib/mysql
     expose:
      - "3306"
     ports:
@@ -33,7 +34,7 @@ services:
     restart: unless-stopped
 
   wordpress:
-    image: wordpress
+    image: wp-test
     init: true
     depends_on:
       - mariadb
@@ -43,25 +44,27 @@ services:
      - ./.env
     networks:
      - my_net
+    volumes:
+     - wordpress_vol:/var/www/wordpress
     expose:
-     - "9000"
+     - "9001"
     restart: unless-stopped
 
 volumes:
-  db:
-    name: "db"
+  mariadb_vol:
+    name: "mariadb_vol"
     driver: local
     driver_opts:
       type: local
       o: bind
-      device: /home/dszklarz/db
-  wp:
-    name: "wordpress"
+      device: /home/dszklarz/volumes/mariadb
+  wordpress_vol:
+    name: "wordpress_vol"
     driver: local
     driver_opts:
       type: local
       o: bind
-      device: /home/dszklarz/wordpress
+      device: /home/dszklarz/volumes/wordpress
 networks:
   my_net:
     name: "my_net"

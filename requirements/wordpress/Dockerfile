@@ -27,10 +27,10 @@ RUN		mkdir /var/log/php-fpm
 
 COPY	./config/php-fpm.conf /etc/php7/php-fpm.conf
 COPY	./config/www.conf /etc/php7/php-fpm.d/www.conf
-COPY	./config/wp-config.php ./
-COPY    ./tools/script.sh ./
+COPY	./config/wp-config.php /
+COPY    ./tools/script.sh /
 
-RUN     chmod +x script.sh
+RUN     chmod +x /script.sh
 
-CMD  [ "sh", "./script.sh" ]
+CMD  [ "sh", "/script.sh" ]
 #CMD  [ "sleep", "infinity" ]
