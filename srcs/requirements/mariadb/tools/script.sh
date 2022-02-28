@@ -15,5 +15,4 @@ fi
 
 service mysql stop
 
-exec mysqld -u root 
-#--datadir="/var/lib/mysql"
+exec mysqld -u root
