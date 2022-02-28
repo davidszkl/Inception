@@ -29,7 +29,7 @@ $(key): $(certificate)
 
 $(certificate): $(mkcert)
 	touch $(certificate) $(key)
-	$(mkcert) -cert-file $(certificate) -key-file $(key) localhost 127.0.0.1 mlefevre.42.fr
+	$(mkcert) -cert-file $(certificate) -key-file $(key) localhost 127.0.0.1 dszklarz.42.fr
 
 $(mkcert):
 	cd $(mkcertdir) && go build -ldflags "-X main.Version=$(git describe --tags)"
@@ -42,14 +42,14 @@ clean: stop
 
 ### need sudo privileges ###
 host:
-	echo "127.0.0.1 mlefevre.42.fr" >> /etc/hosts
+	echo "127.0.0.1 dszklarz.42.fr" >> /etc/hosts
 
 cleanhost:
-	sed -i 's/127\.0\.0\.1 mlefevre.42.fr//g' /etc/hosts
+	sed -i 's/127\.0\.0\.1 dszklarz.42.fr//g' /etc/hosts
 
 volumes:
-	mkdir -p /home/mlefevre/data/mariadb_volume
-	mkdir -p /home/mlefevre/data/wordpress_volume
+	mkdir -p /home/dszklarz/data/mariadb_volume
+	mkdir -p /home/dszklarz/data/wordpress_volume
 
 cleanvolumes:
 	rm -rf /hone/mlefeve/data/mariadb_volume
