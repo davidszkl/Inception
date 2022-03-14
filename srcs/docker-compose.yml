@@ -2,51 +2,52 @@ version: '2'
 services:
     mariadb_cont:
         volumes:
-            - mariadb_vol:/var/lib/mysql
+            - mariadb_volume:/var/lib/mysql
         env_file:
             - .env
         restart: on-failure
         container_name: mariadb_cont
-        image: mariadb
+        image: mariadb_im
         networks:
             - docker_network
     wordpress_cont:
         volumes:
-           - wordpress_vol:/var/www/html
+           - wordpress_volume:/var/www/html
         env_file:
             - .env
         restart: on-failure
         depends_on:
             - mariadb_cont
         container_name: wordpress_cont
-        image: wordpress
+        image: wordpress_im
         networks:
             - docker_network
     nginx_cont:
         volumes:
-            - wordpress_vol:/var/www/html
+            - wordpress_volume:/var/www/html
         restart: on-failure
         depends_on:
             - wordpress_cont
         container_name: nginx_cont
         networks:
             - docker_network
-        image: nginx
+        image: nginx_im
         ports:
             - 443:443
 networks:
     docker_network:
         driver: bridge
 volumes:
-     mariadb_vol:
+     mariadb_volume:
          driver: local
          driver_opts:
              type: 'none'
              o: 'bind'
-             device: '/home/dszklarz/volumes/mariadb'
-     wordpress_vol:
+             device: '/home/mlefevre/data/mariadb_volume'
+     wordpress_volume:
          driver: local
          driver_opts:
              type: 'none'
              o: 'bind'
-             device: '/home/dszklarz/volumes/wordpress'
+             device: '/home/mlefevre/data/wordpress_volume'
+
