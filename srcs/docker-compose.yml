@@ -43,11 +43,11 @@ volumes:
          driver_opts:
              type: 'none'
              o: 'bind'
-             device: '/home/mlefevre/data/mariadb_volume'
+             device: '/home/dszklarz/data/mariadb_volume'
      wordpress_volume:
          driver: local
          driver_opts:
              type: 'none'
              o: 'bind'
-             device: '/home/mlefevre/data/wordpress_volume'
+             device: '/home/dszklarz/data/wordpress_volume'
 

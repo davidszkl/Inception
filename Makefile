@@ -1,6 +1,6 @@
-compose_file=srcs/docker-compose.compose_file
+compose_file=srcs/docker-compose.yml
 
-up: build
+up: images
 	sudo docker-compose -f $(compose_file) up -d
 
 down:
