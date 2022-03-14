@@ -2,7 +2,7 @@ FROM debian:buster
 
 RUN apt-get update  -y &&	\
 	apt-get upgrade -y &&	\
-	apt-get install nginx
+	apt-get install -y nginx
 
 COPY conf/default /etc/nginx/sites-available/wordpress.conf
 COPY conf/certificate.crt /etc/nginx/certificate.crt
