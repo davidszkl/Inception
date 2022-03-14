@@ -1,64 +1,33 @@
-SHELL=/bin/bash
-certificate=./srcs/requirements/nginx/conf/certificate.crt
-key=./srcs/requirements/nginx/conf/private.key
-mkcertdir=./srcs/requirements/nginx/tools/mkcert
-mkcert=$(mkcertdir)/mkcert
-yml=srcs/docker-compose.yml
+compose_file=srcs/docker-compose.compose_file
 
-run: build
-	sudo docker-compose -f $(yml) up -d
+up: build
+	sudo docker-compose -f $(compose_file) up -d
 
-stop:
-	sudo docker-compose -f $(yml) down
+down:
+	sudo docker-compose -f $(compose_file) down
 
-build: .mariadb_done .wordpress_done .nginx_done 
+images: .mariadb .wp .nginx
 
-.wordpress_done:
+.wp:
 	sudo docker build -t wordpress_im srcs/requirements/wordpress/
 	touch $@
 
-.mariadb_done:
+.mariadb:
 	sudo docker build -t mariadb_im srcs/requirements/mariadb/
 	touch $@
 
-.nginx_done: $(certificate) $(key)
+.nginx:
 	sudo docker build -t nginx_im srcs/requirements/nginx/
 	touch $@
 
-$(key): $(certificate)
-
-$(certificate): $(mkcert)
-	touch $(certificate) $(key)
-	$(mkcert) -cert-file $(certificate) -key-file $(key) localhost 127.0.0.1 dszklarz.42.fr
-
-$(mkcert):
-	cd $(mkcertdir) && go build -ldflags "-X main.Version=$(git describe --tags)"
-	$(mkcert) -install
-
 clean: stop
-	rm -rf .nginx_done .wordpress_done .mariadb_done
-	rm -rf $(certificate) $(key)
-	rm -rf $(mkcert)
-
-### need sudo privileges ###
-host:
-	echo "127.0.0.1 dszklarz.42.fr" >> /etc/hosts
-
-cleanhost:
-	sed -i 's/127\.0\.0\.1 dszklarz.42.fr//g' /etc/hosts
+	rm -rf .nginx .wp .mariadb
+	docker volume rm $(docker volume ls -q) || echo no volume found
 
 volumes:
 	mkdir -p /home/dszklarz/data/mariadb_volume
 	mkdir -p /home/dszklarz/data/wordpress_volume
 
-cleanvolumes:
-	rm -rf /hone/dszklarz/data/mariadb_volume
-	rm -rf /hone/dszklarz/data/wordpress_volume
-	docker volume rm $(docker volume ls -q) || echo no volume to be deleted
-## --- ###
-
 re: clean build
 
-rerun: clean run
-
-.PHONY: clean re rerun build run stop host cleanhost volumes cleanvolumes
+.PHONY: clean re images up down volumes
