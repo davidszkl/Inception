@@ -1,24 +1,15 @@
-###install inception:###
-	sudo apt install libnss3-tools -y
-	make build && sudo make host && sudo make volumes
+# Inception
 
-###run inception:###
-	make run
+System administration project aimed at learning docker, you have to setup a complete docker network with the following services:
+- nginx with https on port 443
+- mariadb
+- wordpress + php-fpm
+- a volume for mariadb and one for nginx and wordpress to share data
 
-###stop inception:###
-	make stop
+Since images can't be pulled from dockerhub they are re-written from debian or alpine
 
-###clean inception:###
-	make clean && sudo make cleanhost && sudo make cleanvolumes
-
-
-###WARNING:###
-	mkcert does not work with sudo privileges, so do not try "sudo make build" or "sudo make run"
-
-###PS:###
-	- "make run" calls "make build" and "make clean" calls "make stop"
-	- "make host" adds "127.0.0.1 mlefevre.42.fr" in /etc/hosts
-and "make cleanhost" removes that line from the file.
-	- "sudo make volume" creates the directories for
-volumes "sudo make cleanvolumes" deletes those directories
-WARNING: all data will be lost and you will have to call "sudo make volumes" again
+Concepts learned:
+- Docker
+- docker-compose
+- configuration
+- network troubleshooting
