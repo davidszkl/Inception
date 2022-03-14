@@ -20,7 +20,7 @@ images: .mariadb .wp .nginx
 	sudo docker build -t nginx_im srcs/requirements/nginx/
 	touch $@
 
-clean: stop
+clean: down
 	rm -rf .nginx .wp .mariadb
 	docker volume rm $(docker volume ls -q) || echo no volume found
 
