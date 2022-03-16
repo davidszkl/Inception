@@ -23,6 +23,8 @@ images: .mariadb .wp .nginx
 clean: down
 	rm -rf .nginx .wp .mariadb
 	docker volume rm $(shell docker volume ls -q)
+	rm -rf /home/dszklarz/data/wordpress_volume/*
+	rm -rf /home/dszklarz/data/mariadb_volume/*
 
 volumes:
 	mkdir -p /home/dszklarz/data/mariadb_volume
