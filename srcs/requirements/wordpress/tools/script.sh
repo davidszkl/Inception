@@ -3,7 +3,7 @@ php -v
 
 sleep 2
 cd /var/www/html/wordpress/public_html
-wp core install --allow-root	--url='http://localhost'					\
+wp core install --allow-root	--url='https://dszklarz.42.fr'					\
 								--title="Dszklarz website"					\
 								--admin_name=dszklarz						\
 								--admin_password=$WP_ADMIN_PASSWD			\
