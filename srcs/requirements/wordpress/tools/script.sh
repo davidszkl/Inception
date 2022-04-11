@@ -1,6 +1,8 @@
 #!/bin/bash
 php -v
 
+sleep 2
+
 until mysqladmin ping -h mariadb_cont -u wpuser -pmariadbwpuserpwd ;do
 	sleep 1
 done
